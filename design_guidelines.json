@@ -1,0 +1,138 @@
+{
+  "theme": "LIGHT",
+  "archetype": "4 (Swiss & High-Contrast - Utility/Industrial Variant)",
+  "rationale": "For an internal operations dashboard (RefillOps), utility, clarity, and density are paramount. The design must facilitate fast, error-free data entry and rapid scanning of jobs and stock levels by plant workers, often on mobile devices. The visual language is authoritative, crisp, and functional.",
+  "typography": {
+    "strategy": "Industrial Utility",
+    "font_families": {
+      "headings": "Chivo",
+      "body": "IBM Plex Sans",
+      "mono": "JetBrains Mono"
+    },
+    "scale": {
+      "h1": "text-3xl sm:text-4xl font-bold tracking-tight text-slate-900",
+      "h2": "text-xl sm:text-2xl font-semibold tracking-tight text-slate-800",
+      "h3": "text-lg font-medium text-slate-800",
+      "body": "text-sm sm:text-base leading-relaxed text-slate-600",
+      "small_labels": "text-xs font-semibold uppercase tracking-[0.1em] text-slate-500",
+      "data_values": "font-mono text-sm tracking-tight text-slate-900"
+    },
+    "rules": [
+      "No generic fonts like Inter or Roboto.",
+      "Data tables must use tabular-nums for predictable column widths.",
+      "Monetary values (₹) and quantities must be clearly delineated, using medium or semi-bold weights."
+    ]
+  },
+  "colors": {
+    "background": {
+      "app": "#F8FAFC",
+      "surface": "#FFFFFF",
+      "surface_hover": "#F1F5F9"
+    },
+    "primary": {
+      "DEFAULT": "#1E3A5F",
+      "hover": "#152c4b",
+      "active": "#0f2038",
+      "foreground": "#FFFFFF"
+    },
+    "accent": {
+      "DEFAULT": "#2563EB",
+      "muted": "#EFF6FF"
+    },
+    "status": {
+      "danger": "#DC2626",
+      "danger_bg": "#FEF2F2",
+      "warning": "#D97706",
+      "warning_bg": "#FFFBEB",
+      "success": "#16A34A",
+      "success_bg": "#F0FDF4",
+      "info": "#0284C7",
+      "info_bg": "#F0F9FF"
+    },
+    "text": {
+      "primary": "#0F172A",
+      "secondary": "#475569",
+      "muted": "#94A3B8"
+    },
+    "border": "#E2E8F0"
+  },
+  "spacing_and_layout": {
+    "grid_system": "MODE B: THE CONTROL ROOM GRID",
+    "desktop": {
+      "sidebar_width": "256px",
+      "page_padding": "p-6 lg:p-8",
+      "dashboard_grid": "grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4"
+    },
+    "mobile": {
+      "bottom_nav_height": "64px",
+      "page_padding": "p-4 pb-20",
+      "dashboard_grid": "grid-cols-1 gap-3"
+    },
+    "containers": {
+      "card": "bg-white rounded-md border border-slate-200 shadow-sm overflow-hidden",
+      "card_padding": "p-4 sm:p-5",
+      "table_container": "bg-white rounded-md border border-slate-200 overflow-x-auto"
+    }
+  },
+  "components": {
+    "buttons": {
+      "primary": "bg-[#1E3A5F] text-white hover:bg-[#152c4b] active:bg-[#0f2038] rounded-md px-4 py-2 font-medium transition-colors focus:ring-2 focus:ring-[#1E3A5F] focus:ring-offset-2",
+      "danger": "bg-red-600 text-white hover:bg-red-700 rounded-md px-4 py-2 font-medium transition-colors",
+      "outline": "border border-slate-300 bg-transparent hover:bg-slate-50 text-slate-700 rounded-md px-4 py-2 font-medium transition-colors",
+      "ghost": "bg-transparent hover:bg-slate-100 text-slate-600 rounded-md px-3 py-1.5 transition-colors"
+    },
+    "forms": {
+      "input": "flex h-10 w-full rounded-md border border-slate-300 bg-white px-3 py-2 text-sm placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#1E3A5F] focus:border-transparent disabled:cursor-not-allowed disabled:opacity-50",
+      "label": "block text-sm font-medium text-slate-700 mb-1.5",
+      "table_input": "h-8 px-2 text-sm border-slate-200 focus:ring-1 focus:ring-[#1E3A5F]"
+    },
+    "tables": {
+      "header": "bg-slate-50 border-b border-slate-200 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider px-4 py-3",
+      "row": "border-b border-slate-100 hover:bg-slate-50/50 transition-colors",
+      "cell": "px-4 py-3 text-sm text-slate-700 whitespace-nowrap",
+      "dense_cell": "px-3 py-2 text-sm text-slate-700"
+    },
+    "badges": {
+      "base": "inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium",
+      "active": "bg-blue-100 text-blue-800",
+      "dispatched": "bg-emerald-100 text-emerald-800",
+      "low_stock": "bg-red-100 text-red-800 border border-red-200"
+    },
+    "tabs": {
+      "list": "flex space-x-1 rounded-md bg-slate-100 p-1",
+      "trigger": "flex-1 flex items-center justify-center whitespace-nowrap rounded-sm px-3 py-1.5 text-sm font-medium ring-offset-white transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1E3A5F] focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-white data-[state=active]:text-slate-900 data-[state=active]:shadow-sm"
+    }
+  },
+  "navigation": {
+    "strategy": "Sidebar (Desktop) + Bottom Nav (Mobile)",
+    "desktop_sidebar": "w-64 bg-[#1E3A5F] text-white flex-shrink-0 border-r border-[#152c4b] fixed inset-y-0 left-0",
+    "desktop_nav_item": "flex items-center px-4 py-2.5 text-sm font-medium rounded-md mx-2 mb-1 text-slate-300 hover:bg-[#152c4b] hover:text-white transition-colors",
+    "desktop_nav_item_active": "flex items-center px-4 py-2.5 text-sm font-medium rounded-md mx-2 mb-1 bg-[#152c4b] text-white",
+    "mobile_bottom_nav": "fixed bottom-0 left-0 right-0 bg-white border-t border-slate-200 flex justify-around items-center h-16 px-2 z-50 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)]",
+    "mobile_nav_item": "flex flex-col items-center justify-center w-full h-full text-slate-500 hover:text-[#1E3A5F]",
+    "mobile_nav_item_active": "flex flex-col items-center justify-center w-full h-full text-[#1E3A5F]"
+  },
+  "icons": {
+    "library": "lucide-react",
+    "instructions": "Use standard functional icons. Dashboard: LayoutDashboard, Jobs: ClipboardList, Parties: Users, Stock: Package, History: History, New Job: Plus, Edit: Edit2, Delete: Trash2, Print: Printer."
+  },
+  "interactions_and_motion": {
+    "hover": "Subtle background shifts on rows (bg-slate-50) and buttons.",
+    "active": "Scale down slightly (transform scale-95) on buttons.",
+    "transitions": "Use 'transition-all duration-200 ease-in-out' globally for color and shadow changes."
+  },
+  "testing_conventions": {
+    "rule": "All interactive elements must have data-testid attributes.",
+    "examples": [
+      "data-testid='login-submit-btn'",
+      "data-testid='nav-dashboard-link'",
+      "data-testid='new-job-btn'",
+      "data-testid='job-active-tab'",
+      "data-testid='add-extinguisher-row-btn'",
+      "data-testid='save-job-btn'"
+    ]
+  },
+  "image_urls": {
+    "empty": "No external images required for this internal tool."
+  }
+}

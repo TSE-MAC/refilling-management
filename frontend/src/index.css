@@ -1,0 +1,110 @@
+@import url('https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&family=IBM+Plex+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html, body, #root {
+    height: 100%;
+}
+
+body {
+    margin: 0;
+    font-family: 'IBM Plex Sans', system-ui, -apple-system, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    background-color: #f3f4f6;
+    color: #0b1c33;
+    overscroll-behavior-y: none;
+}
+
+h1, h2, h3, h4, h5, h6, .font-display {
+    font-family: 'Archivo', system-ui, sans-serif;
+    letter-spacing: -0.015em;
+}
+
+.font-mono, code {
+    font-family: 'JetBrains Mono', ui-monospace, monospace;
+}
+
+@layer base {
+    :root {
+        --background: 220 14% 96%;
+        --foreground: 215 35% 12%;
+        --card: 0 0% 100%;
+        --card-foreground: 215 35% 12%;
+        --popover: 0 0% 100%;
+        --popover-foreground: 215 35% 12%;
+        --primary: 213 56% 21%;
+        --primary-foreground: 0 0% 100%;
+        --secondary: 220 14% 94%;
+        --secondary-foreground: 215 35% 12%;
+        --muted: 220 14% 94%;
+        --muted-foreground: 220 10% 40%;
+        --accent: 220 14% 94%;
+        --accent-foreground: 215 35% 12%;
+        --destructive: 0 72% 51%;
+        --destructive-foreground: 0 0% 100%;
+        --border: 220 13% 89%;
+        --input: 220 13% 89%;
+        --ring: 213 56% 21%;
+        --radius: 0.625rem;
+    }
+}
+
+@layer base {
+    * { @apply border-border; }
+    body { @apply bg-background text-foreground; }
+}
+
+/* Numeric tightening */
+.tabular-nums { font-variant-numeric: tabular-nums; }
+
+/* Hide number spinners */
+input[type='number']::-webkit-outer-spin-button,
+input[type='number']::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+input[type='number'] { -moz-appearance: textfield; }
+
+/* Industrial scrollbar (desktop) */
+@media (min-width: 768px) {
+    ::-webkit-scrollbar { width: 10px; height: 10px; }
+    ::-webkit-scrollbar-track { background: #f3f4f6; }
+    ::-webkit-scrollbar-thumb { background: #d1d5db; border-radius: 8px; border: 2px solid #f3f4f6; }
+    ::-webkit-scrollbar-thumb:hover { background: #9ca3af; }
+}
+
+/* Subtle dot pattern utility */
+.bg-dot-pattern {
+    background-image: radial-gradient(circle, rgba(15, 32, 56, 0.06) 1px, transparent 1px);
+    background-size: 16px 16px;
+}
+
+.ops-card {
+    @apply bg-white rounded-xl border border-slate-200/80 shadow-ops;
+}
+
+.ops-chip {
+    @apply inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[11px] font-semibold uppercase tracking-wider;
+}
+
+.ops-pill {
+    @apply inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium;
+}
+
+.ops-fab-safe {
+    padding-bottom: env(safe-area-inset-bottom);
+}
+
+/* Skeleton shimmer */
+.skeleton {
+    background: linear-gradient(90deg, #eef0f3 0%, #f6f7f9 50%, #eef0f3 100%);
+    background-size: 200% 100%;
+    animation: shimmer 1.6s linear infinite;
+    border-radius: 6px;
+}
+
+/* Tap feedback on touch devices */
+button { -webkit-tap-highlight-color: transparent; }
+
+/* Disable iOS pull-to-refresh visual that conflicts with sticky header */
+html { overscroll-behavior-y: contain; }

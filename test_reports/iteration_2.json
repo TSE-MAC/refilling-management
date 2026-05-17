@@ -1,0 +1,38 @@
+{
+  "summary": "Frontend-only retest of the RefillOps redesign (framer-motion, drawers, FAB, sticky save bar, bottom nav). Tested at desktop (1440x900) and mobile (412x915). All critical flows pass: Login, Dashboard sections + stat cards (stat-active-jobs/extinguishers/low-stock/monthly-delivery), sidebar + active pill, Jobs Active/Dispatched tabs, search, Parties add/search/edit/delete via Drawer, New Job (party autocomplete with 'Existing party' & 'Walk-in' chips, Add Row, qty/type/size/unit dynamic update), Job Detail dispatch via Drawer with data-testid='jobdetail-confirm-dispatch-btn' (correctly switches to read-only after confirm), Jobs list dispatch Drawer (dispatch-confirm-dialog/dispatch-confirm-btn/dispatch-cancel-btn), History summary strip + filter drawer + ?q= deep-link prefill, Stock tabs (parts/log), Add Stock drawer with +5 quick chip filling qty=5 (verified log delta +1), mobile bottom-nav, FAB, profile sheet + mobile logout. Backend not retested per request (iteration_1 11/11 passing, unchanged).",
+  "backend_issues": {"critical": [], "minor": []},
+  "frontend_issues": {
+    "ui_bugs": [
+      {"component": "NewJob sticky save bar (and JobDetail sticky save bar)", "issue": "At desktop viewport (1440x900) the 'Save Job' button (bottom-right of sticky bar at ~x=1261, y=844) is OVERLAPPED by a preview badge (fixed bottom-right). elementFromPoint at the button center returns a <p> from the badge instead of the button, so real-mouse clicks are intercepted. Programmatic JS .click() works (POST /jobs fires and job is created), but a real user clicking with a pointer at that pixel will hit the badge. Same overlap applies to JobDetail's bottom 'Save'. The badge is a preview environment overlay (not part of the product), so this is an environment-induced UX issue rather than a code bug — but consider shifting the sticky save bar's right padding (e.g. pr-40 on desktop) or moving the save button slightly left so it never collides with that fixed badge area in preview.", "selector": "[data-testid=\\\"save-job-btn\\\"], JobDetail save in sticky bar", "priority": "MEDIUM"},
+      {"component": "Mobile bottom-nav links", "issue": "Only the desktop <Sidebar> NavLinks carry data-testid (nav-dashboard-link, nav-jobs-link, ...). The mobile bottom-nav (data-testid='mobile-bottom-nav') iterates the same NAV array but does NOT pass `testid` to its <NavLink>s, so on mobile there's no per-item testid. Functionally clicking icons works (verified manually via text label), but it breaks automation: at mobile width, page.locator('[data-testid=\"nav-jobs-link\"]') resolves to the hidden sidebar element. Add data-testid (e.g. `nav-jobs-link-mobile`) inside the mobile bottom-nav <NavLink>s.", "selector": "Layout.jsx mobile bottom-nav NavLink", "priority": "LOW"}
+    ],
+    "integration_issues": [],
+    "design_issues": [
+      {"screen": "Mobile dashboard / bottom nav", "issues": ["Preview badge (fixed bottom-right) overlaps the right edge of the mobile bottom-nav (5th 'Stock' tab label) and partially overlays the FAB. Cosmetic — env-only."]},
+      {"screen": "Stock tab key naming", "issues": ["The inventory tab uses k:'parts' so its data-testid is 'stock-tab-parts' (not 'stock-tab-inventory' as the spec implied). Confusing for testers — rename const TABS[0].k to 'inventory' for readability (review request expected 'stock-tab-inventory')."]}
+    ]
+  },
+  "test_report_links": [
+    "/app/backend/tests/backend_test.py",
+    "/app/test_reports/pytest/pytest_results.xml"
+  ],
+  "action_items": [
+    "Add right padding (e.g. md:pr-40 / pr-32) to the sticky save bar inner container in /app/frontend/src/pages/NewJob.jsx (line ~382) and the equivalent JobDetail sticky save bar so the Save button is never overlapped by the preview badge at desktop viewports.",
+    "Add data-testid to mobile bottom-nav NavLinks in /app/frontend/src/components/Layout.jsx (NAV map at line ~177) so automation can target them at mobile viewports (suffix '-mobile' to avoid duplicates with hidden sidebar).",
+    "(Optional) Rename Stock TABS[0].k from 'parts' to 'inventory' to make data-testid 'stock-tab-inventory' match user expectation."
+  ],
+  "critical_code_review_comments": [
+    "Layout.jsx mobile bottom-nav iterates NAV but drops the `testid` prop. Either always render `data-testid` on every NavLink, or split sidebar/bottom-nav testids.",
+    "NewJob.jsx + JobDetail.jsx sticky save bar uses `fixed left-0 right-0 md:left-60`. Combined with the preview-env badge (fixed bottom-right), the Save action becomes click-blocked. Even outside the preview, any future fixed UI in the bottom-right (toaster, helpdesk) will collide.",
+    "JobDetail.jsx already exposes Save Changes & Dispatch buttons in the gradient header — the duplicate sticky bottom Save bar adds confusion and the bottom one is the one that overlaps the badge. Consider keeping only the header buttons on JobDetail, or hiding the sticky bar on /jobs/:id.",
+    "Stock.jsx uses tab key 'parts' but renders label 'Inventory'; testid `stock-tab-parts` will surprise reviewers. Naming should match domain language."
+  ],
+  "updated_files": [],
+  "success_rate": {"backend": "skipped (unchanged)", "frontend": "95%"},
+  "test_credentials": "suresafe / suresafe123 (verified)",
+  "seed_data_creation": "Created during this run: party 'TEST_UI2_Party' (phone 9999911111); jobs 'TEST_UI2_Walkin'(active), 'TEST_UI2_Walkin2'(dispatched), 'TEST_UI2_MobileSave'(unsaved due to mobile path interrupted); stock-in entries on first spare-part with note 'TEST_UI2 add'. Cleanup not performed — main agent can ignore or purge by TEST_UI2 prefix.",
+  "retest_needed": false,
+  "main_agent_can_self_test": true,
+  "context_for_next_testing_agent": "The Save Job click failure at desktop was reproduced reliably: elementFromPoint at the button center returns a <p> from the preview badge. Workaround in Playwright: use page.evaluate(\"document.querySelector('[data-testid=\\\"save-job-btn\\\"]').click()\"). Real-user mouse click in preview env will likely fail. Mobile bottom-nav lacks per-link testids — use desktop viewport for nav assertions or target by visible text. Stock inventory tab testid is 'stock-tab-parts' (not 'stock-tab-inventory'). All other data-testids match the spec exactly. Dispatch from Jobs list uses Drawer with data-testid='dispatch-confirm-dialog'/'dispatch-confirm-btn'/'dispatch-cancel-btn' — verified working. Dispatch from Job Detail uses Drawer with data-testid='jobdetail-confirm-dispatch-btn' — verified working (status flips to dispatched, edit save btn disappears).",
+  "rca of the issue": "Root cause for Save Job click interception: the sticky save bar in /app/frontend/src/pages/NewJob.jsx (and the equivalent sticky bar in JobDetail.jsx) places the Save button at the absolute bottom-right of the viewport with no right padding, while the preview env injects a fixed `Made with preview` badge at the same bottom-right corner. The badge has a higher effective stacking context at the pixel center of the Save button, so pointer events route to the badge's <p> instead of the button. Reproduction: open /jobs/new at 1440x900, fill the form, attempt to click 'Save Job' with a real pointer — nothing happens; no POST /api/jobs in the network tab. Fix: add `pr-32 md:pr-40` (or larger) to the inner flex container of the sticky save bar, OR move the Save button leftward, OR remove the duplicate sticky save bar on JobDetail (header already has Save Changes + Dispatch)."
+}
