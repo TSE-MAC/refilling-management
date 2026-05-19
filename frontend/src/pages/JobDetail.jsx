@@ -264,14 +264,14 @@ export default function JobDetail() {
                   <div className="flex-1 p-2.5 grid grid-cols-12 gap-2 items-center">
                     {readonly ? (
                       <>
-                        <div className="col-span-5 sm:col-span-3 font-bold text-ops-ink">{e.type}</div>
-                        <div className="col-span-4 sm:col-span-3 font-mono tabular-nums font-semibold">
-                          {e.size}
+                        <div className="col-span-3 sm:col-span-3 font-bold text-ops-ink">{e.type}</div>
+                        <div className="col-span-5 sm:col-span-4 flex items-center gap-1.5">
+                          <span className="font-mono tabular-nums font-semibold">{e.size}</span>
+                          <span className="ops-pill bg-ops-bg text-ops-ink uppercase shrink-0 whitespace-nowrap text-[11px]">
+                            {e.unit}
+                          </span>
                         </div>
-                        <div className="col-span-3 sm:col-span-2 ops-pill bg-ops-bg text-ops-ink uppercase">
-                          {e.unit}
-                        </div>
-                        <div className="col-span-12 sm:col-span-4 text-right">
+                        <div className="col-span-4 sm:col-span-5 text-right">
                           <span className="font-mono tabular-nums font-extrabold text-lg text-ops-ink">
                             {e.quantity}
                           </span>
@@ -503,9 +503,9 @@ export default function JobDetail() {
 
 function HeaderStat({ label, value, mono }) {
   return (
-    <div className="rounded-lg bg-white/10 px-3 py-2">
-      <div className="text-[10px] uppercase tracking-wider font-bold text-white/60">{label}</div>
-      <div className={`font-display font-extrabold text-lg ${mono ? 'font-mono tabular-nums' : ''}`}>
+    <div className="rounded-lg bg-white/10 px-2.5 sm:px-3 py-2 overflow-hidden">
+      <div className="text-[9px] sm:text-[10px] uppercase tracking-wider font-bold text-white/60 truncate">{label}</div>
+      <div className={`font-display font-extrabold text-lg truncate ${mono ? 'font-mono tabular-nums' : ''}`}>
         {value}
       </div>
     </div>
